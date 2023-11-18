@@ -11,13 +11,19 @@ use Illuminate\Support\Facades\Validator;
 
 class InvoiceController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->only(['store', 'update']);
+    }
     use HttpResponses;
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return InvoiceResource::collection(Invoice::with('user')->get());
+        return (new Invoice())->filter($request);
+        // return InvoiceResource::collection(Invoice::with('user')->get());
     }
 
     /**
